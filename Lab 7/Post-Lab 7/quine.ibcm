@@ -1,0 +1,27 @@
+C008 000	jmp	start
+5000 001 ldit	load	addit
+0000 002 zero	dw	zero
+001A 003 lines	dw	lines
+0000 004 ct	dw	ct
+0000 005 tmp	dw	tmp
+0001 006 one	dw	one
+3002 007	load	zero
+4004 008	store	ct
+3003 009 start	load	lines
+6004 00A	sub	ct
+D01A 00B	jpme	xit
+E01A 00C	jmpl	xit
+3001 00D	load	addit	form instructions
+5004 00E	add	ct
+4011 00F	store	stit	store instructions
+3005 010	load	tmp
+0000 011 stit	dw	0
+1800 012	printH
+4005 013	store	tmp
+3002 014	load	zero
+4005 015	store	tmp
+3004 016	load	ct	ct++;
+5006 017	add	one
+4004 018	store	ct
+C009 019	jmp	start	gotostart
+0000 01A xit	halt

@@ -1,0 +1,73 @@
+C00A 000	jmp 	input 	skip around the variables
+4000 001 stit	dw 	4000
+5000 002 doit	dw	5000
+0000 003 i 	dw 	0 	int i;
+0000 004 s 	dw 	0 	int s;
+0049 005 &a	dw	0	int a[];
+0000 006 n 	dw 	0	n;
+0000 007 zero 	dw 	0
+0001 008 one 	dw 	1
+5000 009 doit2	dw	5000
+1000 00A start	readH 		read array size
+4006 00B 	store 	n
+E01E 00C	jmpl	xit	if (n < 0), re-input
+D01E 00D	jmpe	xit	if (n == 0), re-input
+3007 00E 	load 	zero 	i = 0;
+4003 00F 	store 	i
+3006 010 loop 	load 	n 	if (i >= n), goto xit
+6003 011 	sub 	i
+E01E 012 	jmpl 	xit
+D01E 013 	jmpe 	xit
+3001 014 	load 	stit	form the instruction to store a[i]
+5005 015 	add 	&a
+5003 016 	add 	i
+4019 017 	store 	stit 	plant the instruction to read in a[i]
+1000 018	readH
+0000 019 stit 	dw 	0
+3003 01A 	load 	i 	i += 1;
+5008 01B 	add 	one
+4003 01C 	store 	i
+C010 01D 	jmp 	loop 	goto loop
+3007 01E	load	zero	i = 0; forward printing
+4003 01F	store	i
+4004 020	store 	s
+3006 021 loop2	load	n	if (i >= n); loop2
+6003 022	sub	i
+E033 023	jmpl	xit
+D033 024	jmpe	xit
+3002 025	load	doit	form instruction to load a[i]
+5005 026	add	&a
+5003 027	add	i
+402A 028	store	doit	form insturctions to print a[i]	
+3004 029	load	s	print s	
+0000 02A doit	dw	0
+1800 02B	printH
+4004 02C	store	s
+3007 02D	load	zero	s = 0;
+4004 02E	store	s
+3003 02F	load	i	i += 1;	
+5008 030	add	one	
+4003 031	store	i
+C021 032	jmp	loop2	goto loop2
+3006 033	load	n	i = n - 1;
+4003 034	store	i
+3003 035	load	i
+6008 036	sub	one
+4003 037	store	i
+3003 038 bprint load	i	if (i < 0) goto xit
+E048 039	jmp	xit
+3009 03A doit2	load	doit2	form instruction to load a[i]
+5005 03B 	add	&a
+5003 03C	add	i
+403F 03D	store	doit2 	plant the instructions to print a[i]
+3004 03E	load	s
+0000 03F doit2	dw	0
+1800 040	printH	s	print s
+4004 041	store	s
+3007 042	load	zero	s = 0;
+4004 043	store	s
+3003 044	load	i	i -= 1;
+6008 045	sub	one
+4003 046	store	i
+C038 047 bprint	jmp	bprint
+0000 048 halt

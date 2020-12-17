@@ -1,0 +1,128 @@
+C012 000	jmp	start	skip around the variables
+0000 001 k	dw	0	int k
+0009 002 j	dw	9	int j
+0000 003 i	dw	0	int i
+0000 004 s	dw	0	int s
+0008 005 eight	dw	8	int eight
+000A 006 n	dw	0	10
+0000 007 zero	dw	1	0
+0001 008 one	dw	A	1
+0000 009 prv	dw	0	prv
+0000 00A cur	dw	0	cur
+0000 00B tmp	dw	0	tmp
+0080 00C &a	dw	0	int a[]
+4000 00D stit	dw	4000	helper to store
+5000 00E ldit	dw	5000	helper to load
+0002 00F two	dw	2	int two	
+0000 010
+0000 011
+3007 012 start	load	zero
+4003 013	store	i	i = 0;
+4001 014	store	k	k = 0;
+400B 015	store	tmp	tmp = 0;
+4009 016	store	prv	prv = 0;
+400A 017	store	cur	cur = 0;
+3006 018 read	load	n	if (n > k), s1;
+6001 019	sub	k
+D032 01A	jmpe	s2	
+E032 01B	jmpl	s2	
+300D 01C	load	stit	form instruction stit
+500C 01D	add	&a
+5001 01E	add	k
+4021 01F	store	doit
+1000 020	readH
+0000 021 doit	dw	0
+3001 022	load	k	k +=1;
+5008 023	add	one
+4001 024	store	k
+C018 025	jmp	input	goto input
+3003 026 s1	load	i	i += 1;
+5008 027	add	one
+4003 028	store	i
+3006 029	load	n
+4002 02A	store	j	j = 10;
+4005 02B	store	eight	eight = 10;
+3002 02C	load	j	j--;
+6008 02D	sub	one
+4002 02E	store	j
+3005 02F	load	eight	
+600F 030	sub	two
+4005 031	store	eight
+3006 032 s2	load	n	if (n < i), goto print
+6003 033	sub	i
+D06A 034	jmpl	setup
+E06A 035	jmpe	setup	
+3002 036 s3	load	j	if(j <= i), goto s1
+6003 037	sub	i	
+D026 038	jmpl	s1		
+E026 039	jmpe	s2	
+300E 03A	load	ldit	form instruction ldit
+500C 03B	add	&a
+5002 03C	add	j
+403F 03D	store	ldit
+300A 03E	load	cur	cur = a[cur];
+0000 03F ldit	dw	0
+400A 040	store	cur
+300E 041	load	ldit	form instruction ldit
+500C 042	add	&a
+5005 043	add	eight
+4046 044	store	stit
+3009 045	load	prv	prv = a[prv];
+0000 046 stit	dw	0
+4009 047	store	prv
+300A 048	load	cur	if(a[cur] >= a[prv]), goto cond
+6009 049	sub	prv
+D04D 04A	jmpl	cond	
+E04D 04B	jmpe	cond	
+C059 04C	jmp	s4	else, s4
+300A 04D cond	load	cur	tmp = cur a[j];
+400B 04E	store	tmp
+3009 04F	load	prv	cur = prv;
+400A 050	store	cur
+300D 051	load	stit	form instruction stit
+500C 052	add	&a
+5002 053	add	j
+4056 054	store	stit
+300A 055	load	cur
+0000 056 stit	dw	0
+300B 057	load	tmp	prv = temp;
+4009 058	store	prv
+300D 059	load	stit	form instruction stit
+500C 05A	add	&a
+5005 05B	add	eight
+405E 05C	store	stit
+3009 05D	load	prv
+0000 05E stit	dw	0
+3007 05F s4	load	zero
+400A 060	store	cur	cur = 0;
+400B 061	store	tmp	tmp = 0;
+4009 062	store	prv	prv = -;
+3002 063	load	j	j--;
+6008 064	sub	one
+4002 065	store	j
+3005 066	load	eight	eight--;
+6008 067	sub	one
+4005 068	store	eight
+C036 069	jmp	s3
+3007 06A setup	load	zero
+4001 06B	store	k	k = 0;
+400A 06C	store	cur
+3006 06D print	load	n	(if k > n), goto xit
+6001 06E	sub	k	
+E07F 06F	jmpl	xit
+D07F 070	jmpe	xit
+300E 071	load	lodit3	form instruction to load in a[k] and print
+500C 072	add	&a
+5001 073	add	k
+4076 074	store	stit
+300A 075	load	cur
+0000 076 stit	dw	0
+1800 077	printH
+400A 078	store	cur
+3007 079	load	zero	cur = 0;
+400A 07A	store	cur
+3001 07B	load	k	k += 1;
+5008 07C	add	one
+4001 07D	store	k
+C06D 07E	jmp	print	goto print
+0000 07F xit halt
